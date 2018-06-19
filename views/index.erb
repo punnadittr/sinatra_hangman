@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: orange;
+    }
+    .wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .alpha-buttons {
+      font-size: 1em;
+      margin-top: 2px;
+      height: 2em;
+      width: 2.5em;
+      border: 1px solid black;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="main-content">
+      <h1>Hangman</h1>
+      <h2><%= display_spaces %></h2>
+      <form>
+      <p>
+      <% ('A'..'G').to_a.each do |char| %>
+       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+       <% end %>
+       </p>
+       <p>
+       <% ('H'..'N').to_a.each do |char| %>
+       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+       <% end %>
+       </p>
+       <p>
+       <% ('O'..'U').to_a.each do |char| %>
+       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+       <% end %>
+       </p>
+       <p>
+       <% ('V'..'Z').to_a.each do |char| %>
+       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+       <% end %>
+       </form>
+    </div>
+  </div>
+</body>
+</html>
