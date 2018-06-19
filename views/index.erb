@@ -32,7 +32,7 @@
   <div class="wrapper">
     <div class="main-content">
       <h1>Hangman</h1>
-      <h2><%= display_spaces %></h2>
+      <h2><%= @session[:rand_word] %></h2>
       <form>
       <p>
       <% ('A'..'G').to_a.each do |char| %>
@@ -54,6 +54,7 @@
        <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
        <% end %>
        </form>
+       
     </div>
   </div>
 </body>

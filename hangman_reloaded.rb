@@ -68,15 +68,23 @@ def guess_word
   end
 end
 
+configure do
+  enable :sessions
+end
+
+post "/" do
+end
+
 get "/" do
+  @session = session
   get_dict
-  get_random_word
-  create_display_spaces
+  session[:rand_word] ||= get_random_word
   erb :index
 end
 
 ("A".."Z").to_a.each do |char|
   get "/#{char}" do
+    mychar = char.downcase
     redirect "/"
   end
 end
