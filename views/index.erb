@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Ruby Hangman</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -24,7 +25,6 @@
       height: 2em;
       width: 2.5em;
       border: 1px solid black;
-      background: white;
     }
   </style>
 </head>
@@ -32,29 +32,25 @@
   <div class="wrapper">
     <div class="main-content">
       <h1>Hangman</h1>
+       <%@session[:clicked_char]%>
+       <%@session[:clicked_chars] << @session[:clicked_char]%>
+       <%=@session[:clicked_chars].uniq.compact%>
       <h2><%= @session[:rand_word] %></h2>
+      <h2><%= @session[:display] %></h2>
       <form>
       <p>
-      <% ('A'..'G').to_a.each do |char| %>
-       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-       <% end %>
+      <% chars = ('a'..'z').to_a %>
+      <% chars.each do |char|%>
+      <% if @session[:clicked_chars].include?(char) %>
+        <a style="visibility: hidden;"href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+        <% else %>
+        <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+        <% end %>
+        <% end %>
        </p>
-       <p>
-       <% ('H'..'N').to_a.each do |char| %>
-       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-       <% end %>
-       </p>
-       <p>
-       <% ('O'..'U').to_a.each do |char| %>
-       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-       <% end %>
-       </p>
-       <p>
-       <% ('V'..'Z').to_a.each do |char| %>
-       <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-       <% end %>
        </form>
-       
+       <p>
+       </p>
     </div>
   </div>
 </body>

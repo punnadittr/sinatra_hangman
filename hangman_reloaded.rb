@@ -8,11 +8,11 @@ def get_dict
 end
 
 def get_random_word
-  @random_word = @dict.sample.downcase.chars
+  @random_word = @dict.sample.downcase
 end
 
 def create_display_spaces
-  @guessing_spaces = Array.new(@random_word.length, "_")
+  @guessing_spaces = Array.new(@session[:rand_word].length, "_")
 end
 
 def display_spaces
@@ -59,11 +59,9 @@ def play
 end
 
 def guess_word
-  puts display_spaces
-  @userinput = gets.chomp
-  @random_word.each_index do |i|
-    if @random_word[i] == @userinput
-      @guessing_spaces[i] = @random_word[i].upcase
+  session[:rand_word].chars.each_index do |i|
+    if session[:rand_word][i] == @session[:clicked_char]
+      @session[:display][i] = session[:rand_word][i].upcase
     end
   end
 end
@@ -72,19 +70,19 @@ configure do
   enable :sessions
 end
 
-post "/" do
-end
-
 get "/" do
   @session = session
   get_dict
+  session[:clicked_chars] ||= []
   session[:rand_word] ||= get_random_word
+  session[:display] ||= create_display_spaces
+  guess_word
   erb :index
 end
 
-("A".."Z").to_a.each do |char|
+("a".."z").to_a.each do |char|
   get "/#{char}" do
-    mychar = char.downcase
+    session[:clicked_char] = char
     redirect "/"
   end
 end
