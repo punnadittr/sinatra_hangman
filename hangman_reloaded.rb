@@ -60,7 +60,7 @@ end
 
 def guess_word
   session[:rand_word].chars.each_index do |i|
-    if session[:rand_word][i] == @session[:clicked_char]
+    if session[:rand_word][i].upcase == @session[:clicked_char]
       @session[:display][i] = session[:rand_word][i].upcase
     end
   end
@@ -76,11 +76,23 @@ get "/" do
   session[:clicked_chars] ||= []
   session[:rand_word] ||= get_random_word
   session[:display] ||= create_display_spaces
+  session[:wrong_counter] ||= 8
   guess_word
   erb :index
 end
 
-("a".."z").to_a.each do |char|
+get "/reset" do
+  @session = session
+  get_dict
+  @session[:clicked_chars] = []
+  @session[:clicked_char] = nil
+  @session[:rand_word] = get_random_word
+  @session[:display] = create_display_spaces
+  @session[:wrong_counter] = 8
+  redirect "/"
+end
+
+("A".."Z").to_a.each do |char|
   get "/#{char}" do
     session[:clicked_char] = char
     redirect "/"

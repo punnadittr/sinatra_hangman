@@ -6,6 +6,13 @@
     body {
       background: orange;
     }
+    h1 {
+      text-decoration: underline;
+    }
+    h4 {
+      color: white;
+    }
+    a { color: inherit; } 
     .wrapper {
       display: flex;
       flex-direction: row;
@@ -20,6 +27,8 @@
       align-items: center;
     }
     .alpha-buttons {
+      border-radius: 15%;
+      background: white;
       font-size: 1em;
       margin-top: 2px;
       height: 2em;
@@ -31,26 +40,95 @@
 <body>
   <div class="wrapper">
     <div class="main-content">
-      <h1>Hangman</h1>
-       <%@session[:clicked_char]%>
-       <%@session[:clicked_chars] << @session[:clicked_char]%>
-       <%=@session[:clicked_chars].uniq.compact%>
-      <h2><%= @session[:rand_word] %></h2>
-      <h2><%= @session[:display] %></h2>
+      <h1><a href="reset">Hangman</a></h1>
+      <% unless @session[:clicked_char].nil? %>
+        <% if !@session[:rand_word].include?(@session[:clicked_char].downcase) %>
+          <% @session[:wrong_counter] -= 1 %>
+        <% end %>
+      <% end %>
+      <% unless @session[:wrong_counter] == 0 %>
+        <h2><%=@session[:wrong_counter]%> guesses left</h2>
+      <% end %>
+      <% if !@session[:display].include?("_") %>
+        <h2>YOU WON!</h2>
+        <h4>Click Hangman to reset</h4>
+        <style>
+        body {
+          background: #4CA64C;
+        }
+        </style>
+      <% elsif @session[:wrong_counter].zero? %>
+        <h2>YOU LOST!</h2>
+        <h4>Click Hangman to reset</h4>
+        <style>
+        body {
+          background: #FF3232;
+        }
+        </style>
+        <h3>The word is <%= @session[:rand_word].upcase %></h3>
+      <% end %>
+       <% @session[:clicked_char] %>
+       <% @session[:clicked_chars] << @session[:clicked_char] %>
+       <!-- <%= @session[:clicked_chars].uniq.compact %> -->
+      <!--  <h2><%= @session[:rand_word] %></h2> -->
+      <h2><%= @session[:display].join(" ") %></h2>
       <form>
-      <p>
-      <% chars = ('a'..'z').to_a %>
-      <% chars.each do |char|%>
-      <% if @session[:clicked_chars].include?(char) %>
-        <a style="visibility: hidden;"href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-        <% else %>
-        <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
-        <% end %>
-        <% end %>
-       </p>
+        <p>
+          <% chars = ('A'..'G').to_a %>
+          <% chars.each do |char|%>
+            <% if @session[:clicked_chars].include?(char) %>
+              <a style="visibility: hidden;"href="<%=char%>">
+                <input class="alpha-buttons" type="button" value="<%=char%>">
+              </a>
+            <% else %>
+              <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+            <% end %>
+          <% end %>
+        </p>
+        <p>
+          <% chars = ('H'..'N').to_a %>
+          <% chars.each do |char|%>
+            <% if @session[:clicked_chars].include?(char) %>
+              <a style="visibility: hidden;" href="<%=char%>">
+                <input class="alpha-buttons" type="button" value="<%=char%>">
+              </a>
+            <% else %>
+              <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+            <% end %>
+          <% end %>
+        </p>
+        <p>
+          <% chars = ('O'..'U').to_a %>
+          <% chars.each do |char|%>
+            <% if @session[:clicked_chars].include?(char) %>
+              <a style="visibility: hidden;" href="<%=char%>">
+                <input class="alpha-buttons" type="button" value="<%=char%>">
+              </a>
+            <% else %>
+              <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+            <% end %>
+          <% end %>
+        </p>
+        <p>
+          <% chars = ('V'..'Z').to_a %>
+          <% chars.each do |char|%>
+            <% if @session[:clicked_chars].include?(char) %>
+              <a style="visibility: hidden;" href="<%=char%>">
+                <input class="alpha-buttons" type="button" value="<%=char%>">
+              </a>
+            <% else %>
+              <a href="<%=char%>"><input class="alpha-buttons" type="button" value="<%=char%>"></a>
+            <% end %>
+          <% end %>
+        </p>
        </form>
-       <p>
-       </p>
+      <% if @session[:wrong_counter] <= 0 || !@session[:display].include?("_") %>
+        <style>
+          .alpha-buttons {
+          display: none;
+          }
+        </style>
+      <% end %>
     </div>
   </div>
 </body>
